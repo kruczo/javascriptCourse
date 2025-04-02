@@ -21,13 +21,15 @@ let bubbles = [
   43, 28, 59, 22, 35, 48, 25, 60, 31, 40, 50, 24, 33, 55, 44, 60, 38, 41, 27,
   21, 46, 36, 53, 57, 30, 52, 56, 42, 26, 58,
 ];
-//bubbles[10] = 77;
+bubbles[100] = 77;
+console.log(bubbles);
 function getHighScore(bubbles) {
   let highestScore = 0;
   for (let i = 0; i < bubbles.length; i++) {
     if (bubbles[i] > highestScore) {
       highestScore = bubbles[i];
     }
+    console.log(bubbles[i]);
   }
   return highestScore;
 }
