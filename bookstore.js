@@ -39,11 +39,13 @@ function allBooks(bookStore) {
     bookTitles.push(bookStore[i].title + "\n");
     console.log(bookStore[i].title);
   }
-  console.log(bookTitles);
+  //console.log(bookTitles);
   alert("Oto książki w naszej księgarni: " + "\n" + bookTitles);
 }
-allBooks(bookStore);
 
+allBooks(bookStore);
+console.log("Wielkość księgarni: " + bookStore.length);
+console.log("Ilość tytułów w tablicy z tytułami" + bookTitles.length);
 //alert(bookStore.map((book) => book.title).join(", ")); - alternatywa do wyświetlania tytułu
 
 /*
@@ -63,8 +65,41 @@ displayAllBooks(bookStore);
 
 function read(bookTitles) {
   let input = prompt("Którą książkę przeczytałeś: " + "\n" + bookTitles);
+  console.log("");
 }
 
+function addBook() {
+  alert(
+    "Za chwilę dodasz książkę." + "\n" + "Podaj nam potrzebne informacje: "
+  );
+  let titleInput = prompt("Podaj tytuł książki: ");
+  let yearInput = parseInt(prompt("Podaj rok wydania: "));
+  let authorInput = prompt("Podaj autora: ");
+  let newBook = new Book(titleInput, yearInput, authorInput);
+  bookStore.push(newBook);
+  bookTitles.push(titleInput + "\n");
+  // console.log(bookStore);
+  alert("Dodałeś książkę. " + '"' + newBook.title + '"');
+}
+
+function addAnotherBook() {
+  let choice;
+  while (true) {
+    let choice = prompt("Czy chcesz dodać kolejną książkę? ");
+    if (choice === "tak") {
+      addBook();
+    } else if (choice === "nie") {
+      alert("Dziękujemy za dodanie nowej książki. ");
+      console.log("Wielkość księgarni po dodaniu książek: " + bookStore.length);
+      console.log("Ilość tytułów w tablicy z tytułami: " + bookTitles.length);
+      break;
+    } else {
+      alert("Wybierz tak lub nie");
+    }
+  }
+}
+
+//GŁÓWNY KOD
 let choice;
 while (true) {
   // Okienko wyboru użytownika
@@ -83,14 +118,20 @@ while (true) {
   choice = parseInt(input);
   //Sprawdzenie wyboru użytkownika
   if (choice === 0) {
+    console.log("Wybór: " + choice + " Wyjście z księgarni");
     alert("Dziękujemy za wiytę." + "\n" + " Zapraszamy ponownie.");
     break;
   } else if (choice === 1) {
+    console.log("Wybór: " + choice + " Wypisanie książek w księgarni");
+    console.log(bookTitles + "\n");
     alert("Oto książki w naszej księgarni: " + "\n" + bookTitles);
   } else if (choice === 2) {
     read(bookTitles);
   } else if (choice === 3) {
-    alert("Dodaj książki");
+    console.log("Wybór: " + choice + " Dodanie książek do księgarni.");
+    addBook();
+    addAnotherBook();
+    console.log(bookTitles + "");
   } else {
     alert("Podaj prawidłowy wybór!");
   }
