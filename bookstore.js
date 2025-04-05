@@ -65,7 +65,6 @@ displayAllBooks(bookStore);
 
 function read(bookTitles) {
   let input = prompt("Którą książkę przeczytałeś: " + "\n" + bookTitles);
-  console.log("");
 }
 
 function addBook() {
