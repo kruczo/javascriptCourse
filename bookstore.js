@@ -4,7 +4,7 @@ let bookStore = [];
 
 //przykład obiektu
 let book1 = {
-  title: '"Rok 1984"',
+  title: "Rok 1984",
   year: 1949,
   author: "George Orwell",
 };
@@ -16,11 +16,11 @@ function Book(title1, year2, author2) {
 }
 
 //konstruktor? obiektu
-let book2 = new Book('"Zbrodnia i kara"', 1866, "Fiodor Dostojewski");
-let book3 = new Book('"Władca Pierścieni"', 1954, "J.R.R Tolkien");
-let book4 = new Book('"Mistrz i Małgorzata"', 1967, "Michaił Bułhakow");
-let book5 = new Book('"Duma i uprzedzenie"', 1866, "Jane Austen");
-let book6 = new Book('"Buszujący w zbożu"', 1951, "J.D. Salinger");
+let book2 = new Book("Zbrodnia i kara", 1866, "Fiodor Dostojewski");
+let book3 = new Book("Władca Pierścieni", 1954, "J.R.R Tolkien");
+let book4 = new Book("Mistrz i Małgorzata", 1967, "Michaił Bułhakow");
+let book5 = new Book("Duma i uprzedzenie", 1866, "Jane Austen");
+let book6 = new Book("Buszujący w zbożu", 1951, "J.D. Salinger");
 
 //dodawanie obiektów do tablicy
 bookStore.push(book1);
@@ -45,35 +45,72 @@ function allBooks(bookStore) {
 
 allBooks(bookStore);
 console.log("Wielkość księgarni: " + bookStore.length);
-console.log("Ilość tytułów w tablicy z tytułami" + bookTitles.length);
 //alert(bookStore.map((book) => book.title).join(", ")); - alternatywa do wyświetlania tytułu
-
-/*
-//Wyświetlanie tytułów w alercie
-function displayAllBooks(bookStore) {
-  let titles = [];
+// WYŚWIETLANIE KSIĄŻEK Z LISTĄ
+function displayStatus(bookStore) {
+  let result = "";
   for (let i = 0; i < bookStore.length; i++) {
-    //titles += bookStore[i].title + "\n"; //"\n" to nowa linia
-    titles.push(bookStore[i].title + "\n");
+    result +=
+      (bookStore[i].read ? "[✓]" : "[ ]") + " " + bookStore[i].title + "\n";
   }
-  alert("Oto książki w naszej księgarni: " + "\n" + titles);
-  console.log(titles);
+  return result;
 }
 
-displayAllBooks(bookStore);
-*/
+// PRZECZYTANE KSIĄŻKI CAŁA FUNKCJA
+function readedBooks() {
+  console.log(displayStatus(bookStore));
+  while (true) {
+    let input = prompt(
+      "Którą książkę przeczytałeś: " +
+        "\n" +
+        displayStatus(bookStore) +
+        "\n" +
+        "Jeżeli chcesz wócić to wpisz '0'"
+    );
 
-function read(bookTitles) {
-  let input = prompt("Którą książkę przeczytałeś: " + "\n" + bookTitles);
+    if (input === "0") {
+      break;
+    }
+    let found = false;
+    for (let i = 0; i < bookStore.length; i++) {
+      if (bookStore[i].title === input) {
+        if (!bookStore[i].read) {
+          bookStore[i].read = true;
+          alert("Przeczytałeś książkę: " + bookStore[i].title);
+        } else {
+          alert("Już przeczytałeś: " + bookStore[i].title);
+        }
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
+      alert("Nie znaleziono takiej książki:");
+    }
+  }
+  console.log("Przeczytane książki: " + "\n" + displayStatus(bookStore)); // przeczytane książki
 }
 
+// DODANIE KSIĄŻKI
 function addBook() {
   alert(
     "Za chwilę dodasz książkę." + "\n" + "Podaj nam potrzebne informacje: "
   );
   let titleInput = prompt("Podaj tytuł książki: ");
+  while (titleInput === "") {
+    alert("Podaj dobre wartości!");
+    titleInput = prompt("Podaj tytuł książki: ");
+  }
   let yearInput = parseInt(prompt("Podaj rok wydania: "));
+  while (isNaN(yearInput) || yearInput === "") {
+    alert("To nie jest dobry rok!");
+    yearInput = prompt("Podaj rok wydania: ");
+  }
   let authorInput = prompt("Podaj autora: ");
+  while (authorInput === "") {
+    alert("Podaj dobre wartości!");
+    authorInput = prompt("Podaj autora: ");
+  }
   let newBook = new Book(titleInput, yearInput, authorInput);
   bookStore.push(newBook);
   bookTitles.push(titleInput + "\n");
@@ -81,16 +118,17 @@ function addBook() {
   alert("Dodałeś książkę. " + '"' + newBook.title + '"');
 }
 
+// DODANIE KOLEJNYCH KSIĄŻEK
 function addAnotherBook() {
-  let choice;
   while (true) {
-    let choice = prompt("Czy chcesz dodać kolejną książkę? ");
+    let choice = prompt(
+      "Czy chcesz dodać kolejną książkę? " + "\n" + "tak lub nie"
+    );
     if (choice === "tak") {
       addBook();
     } else if (choice === "nie") {
       alert("Dziękujemy za dodanie nowej książki. ");
       console.log("Wielkość księgarni po dodaniu książek: " + bookStore.length);
-      console.log("Ilość tytułów w tablicy z tytułami: " + bookTitles.length);
       break;
     } else {
       alert("Wybierz tak lub nie");
@@ -125,12 +163,14 @@ while (true) {
     console.log(bookTitles + "\n");
     alert("Oto książki w naszej księgarni: " + "\n" + bookTitles);
   } else if (choice === 2) {
-    read(bookTitles);
+    console.log("Wybór: " + choice + " Oznaczenie przeczytanych");
+    readedBooks(bookTitles);
   } else if (choice === 3) {
     console.log("Wybór: " + choice + " Dodanie książek do księgarni.");
     addBook();
     addAnotherBook();
     console.log(bookTitles + "");
+    console.log(bookStore);
   } else {
     alert("Podaj prawidłowy wybór!");
   }
